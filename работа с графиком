@@ -1,0 +1,26 @@
+from tkinter import *
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
+
+def plot_graph():
+    x = np.linspace(0, 2 * np.pi, 100)
+    y = np.sin(x)
+    ax.clear()
+    ax.plot(x, y)
+    ax.set_title("График синуса")
+    canvas.draw()
+
+root = Tk()
+root.title("График функции")
+
+fig = Figure(figsize=(5, 4), dpi=100)
+ax = fig.add_subplot(111)
+
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.get_tk_widget().pack()
+
+button = Button(root, text="Построить график", command=plot_graph)
+button.pack(pady=10)
+
+root.mainloop()
