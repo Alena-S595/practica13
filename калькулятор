@@ -1,0 +1,51 @@
+from tkinter import *
+
+def calculate():
+    try:
+        num1 = float(entry1.get())
+        num2 = float(entry2.get())
+        operation = operation_var.get()
+        if operation == "+":
+            result = num1 + num2
+        elif operation == "-":
+            result = num1 - num2
+        elif operation == "*":
+            result = num1 * num2
+        elif operation == "/":
+            result = num1 / num2
+        result_label.config(text=f"Результат: {result}")
+    except ValueError:
+        result_label.config(text="Ошибка: введите числа")
+
+root = Tk()
+root.title("Калькулятор")
+
+# Надпись для первого поля ввода
+label1 = Label(root, text="Введите первое число:")
+label1.pack(pady=(10, 0))  # Отступ сверху 10, снизу 0
+
+entry1 = Entry(root, width=20)
+entry1.pack(pady=(0, 10))  # Отступ сверху 0, снизу 10
+
+# Надпись для второго поля ввода
+label2 = Label(root, text="Введите второе число:")
+label2.pack(pady=(10, 0))  # Отступ сверху 10, снизу 0
+
+entry2 = Entry(root, width=20)
+entry2.pack(pady=(0, 10))  # Отступ сверху 0, снизу 10
+
+# Выбор операции
+operation_var = StringVar(value="+")
+operations = ["+", "-", "*", "/"]
+for op in operations:
+    Radiobutton(root, text=op, variable=operation_var, value=op).pack()
+
+# Кнопка для вычисления
+button = Button(root, text="Вычислить", command=calculate)
+button.pack(pady=10)
+
+# Поле для вывода результата
+result_label = Label(root, text="Результат: ")
+result_label.pack(pady=10)
+
+root.mainloop()
