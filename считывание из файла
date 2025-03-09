@@ -1,0 +1,34 @@
+from tkinter import *
+from tkinter import filedialog, messagebox
+
+def open_file():
+    # Открываем диалог выбора файла
+    file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
+    
+    if file_path:
+        try:
+            # Читаем содержимое файла
+            with open(file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+            
+            # Очищаем текстовое поле и вставляем содержимое файла
+            text.delete(1.0, END)
+            text.insert(END, content)
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось прочитать файл: {e}")
+
+# Создаем главное окно
+root = Tk()
+root.title("Чтение текстового файла")
+root.geometry("500x400")
+
+# Создаем текстовое поле для вывода содержимого файла
+text = Text(root, wrap=WORD, font=("Arial", 12))
+text.pack(expand=True, fill=BOTH, padx=10, pady=10)
+
+# Создаем кнопку для открытия файла
+open_button = Button(root, text="Открыть файл", command=open_file, font=("Arial", 12))
+open_button.pack(pady=10)
+
+# Запускаем главный цикл обработки событий
+root.mainloop()
