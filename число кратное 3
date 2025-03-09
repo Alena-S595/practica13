@@ -1,0 +1,39 @@
+from tkinter import *
+from tkinter import messagebox
+import random
+
+def generate_and_find():
+    try:
+        # Генерируем случайную последовательность чисел
+        numbers = [random.randint(1, 100) for _ in range(10)]
+        
+        # Находим максимальное число, кратное трём
+        max_multiple_of_three = max((num for num in numbers if num % 3 == 0), default=None)
+        
+        # Обновляем текстовые поля
+        numbers_label.config(text=f"Сгенерированные числа: {numbers}")
+        if max_multiple_of_three is not None:
+            result_label.config(text=f"Максимальное число, кратное трём: {max_multiple_of_three}")
+        else:
+            result_label.config(text="Нет чисел, кратных трём.")
+    except Exception as e:
+        messagebox.showerror("Ошибка", f"Произошла ошибка: {e}")
+
+# Создаем главное окно
+root = Tk()
+root.title("Поиск максимального числа, кратного трём")
+root.geometry("400x200")
+
+# Создаем текстовые поля для вывода результатов
+numbers_label = Label(root, text="Сгенерированные числа: ", font=("Arial", 12))
+numbers_label.pack(pady=10)
+
+result_label = Label(root, text="Максимальное число, кратное трём: ", font=("Arial", 12))
+result_label.pack(pady=10)
+
+# Создаем кнопку для генерации и поиска
+generate_button = Button(root, text="Сгенерировать и найти", command=generate_and_find, font=("Arial", 12))
+generate_button.pack(pady=20)
+
+# Запускаем главный цикл обработки событий
+root.mainloop()
