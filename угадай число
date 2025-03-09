@@ -1,0 +1,42 @@
+from tkinter import *
+import random
+
+def check_guess():
+    try:
+        guess = int(entry.get())
+        if guess == number:
+            result_label.config(text="Поздравляю! Вы угадали!")
+        elif guess < number:
+            result_label.config(text="Загаданное число больше.")
+        else:
+            result_label.config(text="Загаданное число меньше.")
+    except ValueError:
+        result_label.config(text="Ошибка: введите число")
+
+# Загадываем случайное число
+number = random.randint(1, 100)
+
+# Создаем главное окно
+root = Tk()
+root.title("Угадай число")
+
+# Надпись с инструкцией
+Label(root, text="Угадайте число от 1 до 100").pack(pady=10)
+
+# Надпись "Введите число"
+Label(root, text="Введите число:").pack(pady=(10, 0))
+
+# Поле для ввода числа
+entry = Entry(root, width=20)
+entry.pack(pady=(0, 10))
+
+# Кнопка для проверки числа
+button = Button(root, text="Проверить", command=check_guess)
+button.pack(pady=10)
+
+# Поле для вывода результата
+result_label = Label(root, text="")
+result_label.pack(pady=10)
+
+# Запуск главного цикла
+root.mainloop()
