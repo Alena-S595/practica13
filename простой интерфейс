@@ -1,0 +1,19 @@
+from tkinter import *
+
+def display_text():
+    text = entry.get()
+    output_label.config(text=text)
+
+root = Tk()
+root.title("Ввод текста")
+
+entry = Entry(root, width=40)
+entry.pack(pady=10)
+
+button = Button(root, text="Показать текст", command=display_text)
+button.pack(pady=10)
+
+output_label = Label(root, text="")
+output_label.pack(pady=10)
+
+root.mainloop()
