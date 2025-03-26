@@ -1,0 +1,64 @@
+# Импортируем библиотеку tkinter для создания GUI
+import tkinter as tk
+# Импортируем messagebox для отображения всплывающих сообщений
+from tkinter import messagebox
+# Импортируем модуль для работы с SQLite базами данных
+import sqlite3
+
+# Создаем класс приложения для работы с базой данных
+class DatabaseApp:
+    # Конструктор класса, инициализирующий главное окно
+    def __init__(self, root):
+        # Сохраняем ссылку на главное окно
+        self.root = root
+        # Устанавливаем заголовок окна
+        self.root.title("Работа с базой данных")
+        
+        # Создаем соединение с БД в оперативной памяти (не сохраняется после закрытия)
+        self.conn = sqlite3.connect(":memory:")
+        # Создаем курсор для выполнения SQL-запросов
+        self.cursor = self.conn.cursor()
+        # Создаем таблицу users с двумя полями: id (автоинкремент) и name (текст)
+        self.cursor.execute("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)")
+        
+        # === Создаем визуальные элементы интерфейса ===
+        
+        # Метка для поля ввода имени пользователя
+        tk.Label(root, text="Имя пользователя:").pack()
+        # Поле для ввода имени пользователя
+        self.entry = tk.Entry(root)
+        self.entry.pack()
+        
+        # Кнопка для добавления пользователя в БД
+        tk.Button(root, text="Добавить", command=self.add_user).pack()
+        # Кнопка для отображения всех пользователей
+        tk.Button(root, text="Показать всех", command=self.show_users).pack()
+    
+    # Метод для добавления пользователя в БД
+    def add_user(self):
+        # Получаем имя из поля ввода
+        name = self.entry.get()
+        # Выполняем SQL-запрос на добавление пользователя
+        self.cursor.execute("INSERT INTO users (name) VALUES (?)", (name,))
+        # Фиксируем изменения в БД
+        self.conn.commit()
+        # Показываем сообщение об успешном добавлении
+        messagebox.showinfo("Успех", "Пользователь добавлен")
+        # Очищаем поле ввода
+        self.entry.delete(0, tk.END)
+    
+    # Метод для отображения всех пользователей
+    def show_users(self):
+        # Выполняем SQL-запрос на выбор всех записей из таблицы
+        self.cursor.execute("SELECT * FROM users")
+        # Получаем все записи
+        users = self.cursor.fetchall()
+        # Формируем строку с пользователями (в формате "id: name") и показываем в сообщении
+        messagebox.showinfo("Пользователи", "\n".join([f"{u[0]}: {u[1]}" for u in users]))
+
+# Создаем главное окно приложения
+root = tk.Tk()
+# Создаем экземпляр нашего приложения
+app = DatabaseApp(root)
+# Запускаем главный цикл обработки событий
+root.mainloop()
