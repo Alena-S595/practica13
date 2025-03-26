@@ -1,0 +1,78 @@
+# Импорт библиотеки tkinter для создания GUI и messagebox для показа сообщений
+import tkinter as tk
+from tkinter import messagebox
+
+# Создание класса приложения для работы со списками
+class ListOperationsApp:
+    # Конструктор класса, инициализирующий главное окно
+    def __init__(self, root):
+        # Сохраняем ссылку на главное окно
+        self.root = root
+        # Устанавливаем заголовок окна
+        self.root.title("Операции со списками")
+        
+        # Инициализация пустого списка для хранения элементов
+        self.items = []
+        
+        # Создание метки для поля ввода
+        tk.Label(root, text="Введите элемент:").pack()
+        # Создание поля для ввода элементов
+        self.entry = tk.Entry(root)
+        self.entry.pack()
+        
+        # Создание кнопок для различных операций со списком
+        tk.Button(root, text="Добавить", command=self.add_item).pack()
+        tk.Button(root, text="Удалить", command=self.remove_item).pack()
+        tk.Button(root, text="Сортировать", command=self.sort_items).pack()
+        tk.Button(root, text="Показать список", command=self.show_items).pack()
+        
+        # Создание Listbox для отображения элементов списка
+        self.listbox = tk.Listbox(root)
+        self.listbox.pack()
+    
+    # Метод для добавления элемента в список
+    def add_item(self):
+        # Получаем текст из поля ввода
+        item = self.entry.get()
+        # Проверяем, что поле не пустое
+        if item:
+            # Добавляем элемент в список
+            self.items.append(item)
+            # Добавляем элемент в Listbox
+            self.listbox.insert(tk.END, item)
+            # Очищаем поле ввода
+            self.entry.delete(0, tk.END)
+    
+    # Метод для удаления выбранного элемента
+    def remove_item(self):
+        try:
+            # Получаем индекс выбранного элемента
+            index = self.listbox.curselection()[0]
+            # Удаляем элемент из Listbox
+            self.listbox.delete(index)
+            # Удаляем элемент из списка
+            del self.items[index]
+        except IndexError:
+            # Показываем предупреждение, если элемент не выбран
+            messagebox.showwarning("Ошибка", "Выберите элемент для удаления")
+    
+    # Метод для сортировки списка
+    def sort_items(self):
+        # Сортируем список
+        self.items.sort()
+        # Очищаем Listbox
+        self.listbox.delete(0, tk.END)
+        # Заполняем Listbox отсортированными элементами
+        for item in self.items:
+            self.listbox.insert(tk.END, item)
+    
+    # Метод для отображения всего списка в отдельном окне
+    def show_items(self):
+        messagebox.showinfo("Список", "\n".join(self.items))
+
+# Создание главного окна приложения
+root = tk.Tk()
+# Создание экземпляра приложения
+app = ListOperationsApp(root)
+# Запуск главного цикла обработки событий
+root.mainloop()
