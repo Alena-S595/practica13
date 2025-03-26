@@ -1,0 +1,58 @@
+# Импортируем библиотеку tkinter для создания GUI
+import tkinter as tk
+
+# Создаем главный класс приложения, наследуемый от tk.Tk
+class App(tk.Tk):
+    def __init__(self):
+        # Вызываем конструктор родительского класса (tk.Tk)
+        super().__init__()
+        # Устанавливаем заголовок окна
+        self.title("Многоформное приложение")
+        # Задаем начальный размер окна
+        self.geometry("300x200")
+        
+        # Переменная для хранения текущего отображаемого фрейма
+        self.current_frame = None
+        # Показываем стартовую страницу при запуске
+        self.show_frame(StartPage)
+    
+    # Метод для переключения между фреймами
+    def show_frame(self, frame_class):
+        # Создаем новый экземпляр запрошенного фрейма
+        new_frame = frame_class(self)
+        # Если текущий фрейм существует, удаляем его
+        if self.current_frame is not None:
+            self.current_frame.destroy()
+        # Сохраняем ссылку на новый фрейм
+        self.current_frame = new_frame
+        # Размещаем новый фрейм в окне
+        self.current_frame.pack()
+
+# Класс стартовой страницы, наследуемый от tk.Frame
+class StartPage(tk.Frame):
+    def __init__(self, master):
+        # Вызываем конструктор родительского класса (tk.Frame)
+        super().__init__(master)
+        # Добавляем метку с текстом "Главная страница"
+        tk.Label(self, text="Главная страница").pack(pady=10)
+        # Добавляем кнопку для перехода на страницу 2
+        tk.Button(self, text="Перейти на страницу 2", 
+                 # Используем lambda для передачи функции с параметром
+                 command=lambda: master.show_frame(PageTwo)).pack()
+
+# Класс второй страницы, наследуемый от tk.Frame
+class PageTwo(tk.Frame):
+    def __init__(self, master):
+        # Вызываем конструктор родительского класса (tk.Frame)
+        super().__init__(master)
+        # Добавляем метку с текстом "Страница 2"
+        tk.Label(self, text="Страница 2").pack(pady=10)
+        # Добавляем кнопку для возврата на стартовую страницу
+        tk.Button(self, text="Вернуться назад", 
+                 # Используем lambda для передачи функции с параметром
+                 command=lambda: master.show_frame(StartPage)).pack()
+
+# Создаем экземпляр главного класса приложения
+app = App()
+# Запускаем главный цикл обработки событий
+app.mainloop()
