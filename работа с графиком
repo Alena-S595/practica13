@@ -1,26 +1,54 @@
+# Импорт всех функций и классов из библиотеки tkinter для создания GUI
 from tkinter import *
+
+# Импорт класса Figure из matplotlib для создания фигур с графиками
 from matplotlib.figure import Figure
+
+# Импорт функции для встраивания графика matplotlib в tkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+# Импорт библиотеки numpy для работы с математическими функциями и массивами
 import numpy as np
 
+# Функция для построения графика
 def plot_graph():
+    # Создание массива x с 100 значениями от 0 до 2π
     x = np.linspace(0, 2 * np.pi, 100)
+    
+    # Вычисление синуса для каждого значения x
     y = np.sin(x)
+    
+    # Очистка предыдущего графика (если был)
     ax.clear()
+    
+    # Построение графика синуса
     ax.plot(x, y)
+    
+    # Установка заголовка графика
     ax.set_title("График синуса")
+    
+    # Обновление холста с графиком
     canvas.draw()
 
+# Создание главного окна приложения
 root = Tk()
+# Установка заголовка окна
 root.title("График функции")
 
+# Создание фигуры matplotlib размером 5x4 дюйма с разрешением 100 точек на дюйм
 fig = Figure(figsize=(5, 4), dpi=100)
+# Добавление подграфика (1x1, первый) к фигуре
 ax = fig.add_subplot(111)
 
+# Создание холста matplotlib для встраивания в tkinter окно
 canvas = FigureCanvasTkAgg(fig, master=root)
+# Размещение холста в окне с помощью менеджера компоновки pack
 canvas.get_tk_widget().pack()
 
+# Создание кнопки с текстом "Построить график", которая вызывает функцию plot_graph
 button = Button(root, text="Построить график", command=plot_graph)
+# Размещение кнопки в окне с отступом 10 пикселей сверху и снизу
 button.pack(pady=10)
 
+# Запуск главного цикла обработки событий tkinter
 root.mainloop()
